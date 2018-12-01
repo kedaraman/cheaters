@@ -1,0 +1,1 @@
+/usr/bin/c++.exe -g  -Wl,--enable-auto-import CMakeFiles/Cheaters.dir/plagiarismChecker.cpp.o  -o Cheaters.exe -Wl,--out-implib,libCheaters.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
