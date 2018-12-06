@@ -30,6 +30,7 @@ public:
     //~Hashtable();
     void add(string words, string fileName);
     int hash(string s);
+    void checkDuplicates();
 
 
 
