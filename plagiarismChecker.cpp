@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <regex>
+#include "Hashtable.h"
 
 
 using namespace std;
@@ -36,6 +37,9 @@ int main()
     vector<string> temp =  vector<string>();
 
     getdir(dir,files);
+
+    Hashtable htbl;
+
 
     for (unsigned int i = 2;i < files.size();i++) {
         cout << i << files[i] << endl;
@@ -70,6 +74,8 @@ int main()
                             cout << toCheck << "\n";
                             m++;
                         }
+                        htbl.add(toCheck,files[i]);
+                        htbl.add(toCheck,files[i]+"VerB");
                         cout << "********\n";
                     }
 

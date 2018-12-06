@@ -14,17 +14,22 @@ using namespace std;
 class Hashtable
 {
     struct HashNode{
-        int key;
+        string key;
         std::string fileName;
         struct HashNode * next;
     };
+    static const int TABLE_SIZE = 100;
+
 
 private:
-    HashNode* tbl[1000000];
-public:
-    Hashtable();
-    ~Hashtable();
+    HashNode* tbl[TABLE_SIZE];
 
+public:
+
+    Hashtable();
+    //~Hashtable();
+    void add(string words, string fileName);
+    int hash(string s);
 
 
 
