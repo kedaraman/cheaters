@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <regex>
 
 
 using namespace std;
@@ -31,6 +32,9 @@ int main()
     string dir = string("C:/AA-KEDAR/SOPH-FALL/Cheaters/sm_doc_set");
     vector<string> files = vector<string>();
 
+    int n = 6; //n-word sequence
+    vector<string> temp =  vector<string>();
+
     getdir(dir,files);
 
     for (unsigned int i = 2;i < files.size();i++) {
@@ -45,9 +49,36 @@ int main()
         {
             while(getline(myfile,s))
             {
-                cout << "--" << s << "--\n";
+                //for(int j = 0; j < s.length(); j = j + n)
+                //{
+                    //cout << s.substr(j,j+n) << "\n";
+
+
+
+                    std::vector<std::string> result;
+                    std::istringstream iss(s);
+                    for(std::string s; iss >> s; )
+                        result.push_back(s);
+
+                    for(int  j = 0; j < result.size(); j++)
+                    {
+                        int  m = 0;
+                        string toCheck = "";
+                        while(m < n)
+                        {
+                            toCheck = toCheck + result[j+m];
+                            cout << toCheck << "\n";
+                            m++;
+                        }
+                        cout << "********\n";
+                    }
+
+
+
+                //}
             }
         }
+        myfile.close();
 
 //        if (!myfile) {
 //            cout << "Unable to open file";
