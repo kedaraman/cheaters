@@ -9,6 +9,7 @@
 #include "Hashtable.h"
 #include <cmath>
 #include <vector>
+#include<cstdio>
 
 
     Hashtable::Hashtable()
@@ -19,19 +20,19 @@
         }
     }
 
-    void Hashtable::add(string words, string fileName)
+    void Hashtable::add(string words, int fileIdx)
     {
         int index = hash(words);
         HashNode * temp = new HashNode;
         temp->key = words;
-        temp->fileName = fileName;
+        temp->fileIdx = fileIdx;
         temp->next = NULL;
 
         HashNode * iter = tbl[index];
         bool alreadyInLinkedList = false;
         while(iter != NULL)
         {
-            if(temp->key == iter->key && temp->fileName == iter->fileName)
+            if(temp->key == iter->key && temp->fileIdx == iter->fileIdx)
             {
                 alreadyInLinkedList = true;
                 break;
@@ -81,9 +82,9 @@
                      prev = temp->next;
                      while(prev != NULL)
                      {
-                        if(temp->key == prev->key && temp->fileName != prev->fileName)
+                        if(temp->key == prev->key && temp->fileIdx != prev->fileIdx)
                         {
-                            cout << "MATCHED \"" << temp->key << "\" FROM FILES " << temp->fileName  << " AND " << prev->fileName << "\n";
+                            cout << "MATCHED \"" << temp->key << "\" FROM FILES " << temp->fileIdx  << " AND " << prev->fileIdx << "\n";
                         }
                         prev = prev->next;
                      }
@@ -93,9 +94,45 @@
                  }
              }
         }
-
-
     }
+
+void Hashtable::getDuplicates (int numFiles, vector<vector<int>> &duplicates)
+{
+
+    for(int i = 0; i < numFiles; i++){
+        for(int j = 0; j < numFiles;  j++)
+        {
+            duplicates[i][j] = 0;
+        }
+    }
+
+
+    for(int i = 0; i < TABLE_SIZE; i++)
+    {
+        if(tbl[i] != NULL)
+        {
+            HashNode * temp = tbl[i];
+            HashNode * prev = tbl[i];
+            while(temp != NULL)
+            {
+                prev = temp->next;
+                while(prev != NULL)
+                {
+                    if(temp->key == prev->key && temp->fileIdx != prev->fileIdx)
+                    {
+                        //cout << "MATCHED \"" << temp->key << "\" FROM FILES " << temp->fileIdx  << " AND " << prev->fileIdx << "\n";
+                        duplicates[temp->fileIdx-2][prev->fileIdx-2]++;
+                    }
+                    prev = prev->next;
+                }
+                temp = temp->next;
+
+
+            }
+        }
+    }
+
+}
 
 
 

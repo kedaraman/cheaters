@@ -28,16 +28,35 @@ int getdir (string dir, vector<string> &files)
     return 0;
 }
 
+
+void printCheaters(vector<vector<int>> matrix, int limit, vector<string> fileNames)
+{
+    cout << "LIST OF SIMILAR FILES"  << endl;
+    for(int i = 0; i < matrix.size(); i++)
+    {
+        for(int j = 0; j < matrix[i].size(); j++)
+        {
+            if(matrix[i][j] >= limit)
+            {
+                cout << matrix[i][j] << ": " << fileNames[i+2] << " , " << fileNames[j+2] << "\n";
+            }
+        }
+    }
+}
+
+
+
+
 int main()
 {
     //Testing out HashTable First
     Hashtable htbl;
-    htbl.add("Hello", "fileA");
-
-    htbl.add("Goodbye", "fileA");
-    htbl.add("Hello", "fileB");
-    htbl.add("Hello", "fileA");
-    htbl.checkDuplicates();
+//    htbl.add("Hello", 2);
+//
+//    htbl.add("Goodbye", 2);
+//    htbl.add("Hello", 3);
+//    htbl.add("Hello", 2);
+//    htbl.checkDuplicates();
 
 
 
@@ -55,8 +74,8 @@ int main()
 
 
 
-    //for (unsigned int i = 2;i < files.size();i++) {
-    for (unsigned int i = 2;i < 7;i++) {
+    for (unsigned int i = 2;i < files.size();i++) {
+    //for (unsigned int i = 2;i < 7;i++) {
         //cout << i << files[i] << endl;
 
         ifstream myfile;
@@ -89,7 +108,7 @@ int main()
                             //cout << toCheck << "\n";
                             m++;
                         }
-                        htbl.add(toCheck,files[i]);
+                        htbl.add(toCheck,i);
                         //cout << "********\n";
                     }
 
@@ -112,7 +131,21 @@ int main()
 
     }
 
-    htbl.checkDuplicates();
+    int numFiles = files.size() -  2;
+    //vector<vector<int>>  dup;
+    vector<vector<int>> duplicates(numFiles,vector<int>(numFiles,1));
+    htbl.getDuplicates(numFiles,duplicates);
+
+//    for(int i = 0; i < duplicates.size(); i++)
+//    {
+//        for(int  j =  0; j < duplicates.size(); j++)
+//        {
+//            cout << "   " << duplicates[i][j] << "   ";
+//        }
+//        cout << "\n";
+//    }
+
+    printCheaters(duplicates,limit,files);
 
 
 

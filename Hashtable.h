@@ -15,7 +15,7 @@ class Hashtable
 {
     struct HashNode{
         string key;
-        std::string fileName;
+        int fileIdx;
         struct HashNode * next;
     };
     static const int TABLE_SIZE = 100;
@@ -28,9 +28,12 @@ public:
 
     Hashtable();
     //~Hashtable();
-    void add(string words, string fileName);
+    void add(string words, int fileName);
     int hash(string s);
     void checkDuplicates();
+    void getDuplicates(int,vector<vector<int>>& );
+
+
 
 
 
