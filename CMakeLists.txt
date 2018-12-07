@@ -3,4 +3,4 @@ project(Cheaters)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Cheaters plagiarismChecker_driver.cpp Hashtable.cpp Hashtable.h)
+add_executable(Cheaters plagiarismCatcher_driver.cpp Hashtable.cpp Hashtable.h)
