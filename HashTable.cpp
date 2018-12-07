@@ -27,30 +27,50 @@ HashTable::HashTable()
 
 int HashTable::hashFunction(string words)
 {
-    int sum = 0;
+    /*int sum = 0;
     int length = words.length();
     for (int i = 0; i < length; i++)
     {
         sum += static_cast<int>(words[length - i - 1] * pow(23, i));
     }
-    return (sum % TABLE_SIZE);
-    //sum += (sum (int)words[i])^2
-    //
-    //sum % length
+    return (sum % TABLE_SIZE);*/
+    signed int sum = 0;
+    for(int i = 0; i < words.length(); i++)
+    {
+        int comp1 = words.size() - i - 1;
+        int comp2 = static_cast<char>(words[comp1]);
+        int temp = comp2 * pow(7,i);
+
+        if(sum + temp< 0)
+        {
+            sum = sum / 4;
+            temp = (static_cast<char>(words[words.size()-i-1]));
+            sum = sum + temp;
+        } else{
+            sum = sum + temp;
+        }
+    }
+    int result = sum % TABLE_SIZE;
+    if(result < 0)
+    {
+        result = result * -1;
+    }
+
+    return result;
 }
 
-void HashTable::add(string words, string fileName)
+void HashTable::add(string words, int fileIndex)
 {
     int index = hashFunction(words);
     HashNode* addedNode = new HashNode;
     addedNode->key = words;
-    addedNode->fileName = fileName;
+    addedNode->fileIndex = fileIndex;
     HashNode* temp = this->table[index];
     bool alreadyInLinkedList = false;
 
     while(temp != NULL)
     {
-        if ((addedNode->key == temp->key) && (addedNode->fileName == temp->fileName))
+        if ((addedNode->key == temp->key) && (addedNode->fileIndex == temp->fileIndex))
         {
             alreadyInLinkedList = true;
             break;
@@ -64,21 +84,26 @@ void HashTable::add(string words, string fileName)
     }
 }
 
-void HashTable::checkDuplicates()
+void HashTable::getDuplicates (int numFiles, vector<vector <int> > &duplicates)
 {
-    vector<string> fNames;
+    for (int i = 0; i < numFiles; i++) {
+        for (int j = 0; j < numFiles; j++) {
+            duplicates[i][j] = 0;
+        }
+    }
+
     for (int i = 0; i < TABLE_SIZE; i++) {
-        if (this->table[i] != NULL) {
-            HashNode *temp = this->table[i];
-            HashNode *next = this->table[i];
+        if (table[i] != NULL) {
+            HashNode* temp = table[i];
+            HashNode* afterTemp = table[i];
             while (temp != NULL) {
-                next = temp->next;
-                while (next != NULL) {
-                    if (temp->key == next->key && temp->fileName != next->fileName) {
-                        cout << "MATCHED \"" << temp->key << "\" FROM FILES " << temp->fileName << " AND "
-                             << next->fileName << "\n";
+                afterTemp = temp->next;
+                while (afterTemp != NULL) {
+                    if (temp->key == afterTemp->key && temp->fileIndex != afterTemp->fileIndex) {
+                        //cout << "MATCHED \"" << temp->key << "\" FROM FILES " << temp->fileIdx  << " AND " << prev->fileIdx << "\n";
+                        duplicates[temp->fileIndex - 2][afterTemp->fileIndex - 2]++;
                     }
-                    next = next->next;
+                    afterTemp = afterTemp->next;
                 }
                 temp = temp->next;
             }

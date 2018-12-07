@@ -34,21 +34,21 @@ class HashTable
     struct HashNode
     {
         string key;
-        string fileName;
+        int fileIndex;
         struct HashNode* next;
     };
 
-    static const int TABLE_SIZE = 1000000;
+    static const int TABLE_SIZE = 100000;
 
 private:
     HashNode* table [TABLE_SIZE];
-    int hashFunction(string words);
 
 public:
     HashTable();
     ~HashTable();
-    void add(string words, string fileName);
-    void checkDuplicates();
+    int hashFunction(string words);
+    void add(string words, int fileIndex);
+    void getDuplicates(int, vector<vector <int> >&);
 
 };
 

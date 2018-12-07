@@ -24,12 +24,12 @@
 #include <fstream>
 #include "HashTable.h"
 #include <cstdlib>
-# include <cstring>
+#include <cstring>
 
 using namespace std;
 
 /*function... might want it in some class?*/
-int getdir (string dir, vector<string> &files)
+int getdir(string dir, vector<string> &files)
 {
     DIR *dp;
     struct dirent *dirp;
@@ -45,23 +45,34 @@ int getdir (string dir, vector<string> &files)
     return 0;
 }
 
+void printCheaters(vector< vector<int> > matrix, int limit, vector<string> fileNames)
+{
+    cout << "LIST OF SIMILAR FILES"  << endl;
+    for(int i = 0; i < matrix.size(); i++)
+    {
+        for(int j = 0; j < matrix[i].size(); j++)
+        {
+            if(matrix[i][j] >= limit)
+            {
+                cout << matrix[i][j] << ": " << fileNames[i+2] << " , " << fileNames[j+2] << "\n";
+            }
+        }
+    }
+}
+
 int main(int argc, char* argv[])
 {
-    //string dir = argv[1];
-    //const int CHUNK_SIZE = atoi(argv[2]);
-    //const int SIMILARITY_THRESHOLD = atoi(argv[3]);
+    HashTable hashTable;
+    string dir = argv[1];
+    const int CHUNK_SIZE = atoi(argv[2]);
+    const int SIMILARITY_THRESHOLD = atoi(argv[3]);
     vector<string> files = vector<string>();
 
-    int n = 6; //n-word sequence
-
-    string dir = "C:/Users/adity/CLionProjects/Cheaters!/sm_doc_set";
     getdir(dir,files);
-
-    HashTable hashTable;
 
     for (unsigned int i = 2; i < files.size(); i++)
     {
-        cout << i << files[i] << endl;
+        //cout << i << files[i] << endl;
 
         ifstream myFile;
         string directory = dir+"/"+files[i];
@@ -89,18 +100,23 @@ int main(int argc, char* argv[])
                 {
                     int  m = 0;
                     string toCheck = "";
-                    while(m < n)
+                    while(m < CHUNK_SIZE)
                     {
                         toCheck = toCheck + results[j + m];
-                        cout << toCheck << "\n";
                         m++;
                     }
-                    hashTable.add(toCheck,files[i]);
-                    cout << "********\n";
+                    hashTable.add(toCheck, i);
                 }
             }
         }
         myFile.close();
     }
+
+    int numFiles = files.size() -  2;
+    vector<vector <int> > duplicates(numFiles, vector<int>(numFiles, 1));
+    hashTable.getDuplicates(numFiles, duplicates);
+
+    printCheaters(duplicates, SIMILARITY_THRESHOLD, files);
+
     return 0;
 }
