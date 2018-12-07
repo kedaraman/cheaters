@@ -8,6 +8,7 @@
 #endif //CHEATERS_HASHTABLE_H
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ public:
     void add(string words, int fileName);
     int hash(string s);
     void checkDuplicates();
-    void getDuplicates(int,vector<vector<int>>& );
+    void getDuplicates(int,vector< vector<int> >& );
 
 
 

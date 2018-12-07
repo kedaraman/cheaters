@@ -5,7 +5,6 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <regex>
 #include "Hashtable.h"
 #include <cmath>
 #include <vector>
@@ -65,7 +64,13 @@
                 sum = sum + temp;
             }
         }
-        return abs(sum % TABLE_SIZE);
+        int result = sum % TABLE_SIZE;
+        if(result < 0)
+        {
+            result = result * -1;
+        }
+
+        return result;
     }
 
     void Hashtable::checkDuplicates()
@@ -96,7 +101,7 @@
         }
     }
 
-void Hashtable::getDuplicates (int numFiles, vector<vector<int>> &duplicates)
+void Hashtable::getDuplicates (int numFiles, vector< vector<int> > &duplicates)
 {
 
     for(int i = 0; i < numFiles; i++){
